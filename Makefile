@@ -1,9 +1,9 @@
 build: clean
-	GOARCH=amd64 GOOS=linux go build -o ./bin/app cmd/app/main.go
+	GOARCH=amd64 GOOS=linux go build -o ./bin/dicterm cmd/dicterm/main.go
 
 clean:
 	go clean
-	-rm ./bin/app
+	-rm ./bin/dicterm
 
 test:
 	go test ./...
