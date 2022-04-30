@@ -28,7 +28,7 @@ func NewClient(client *http.Client, url, key string) *Handler {
 func (a *Handler) Get(word string) ([]byte, error) {
 	res, err := a.Client.Get(fmt.Sprintf("%s/%s?key=%s", a.BaseURL, word, a.Key))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("could not send request, %w", err)
 	}
 	defer res.Body.Close()
 
