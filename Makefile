@@ -1,5 +1,5 @@
 build: clean
-	GOARCH=amd64 GOOS=linux go build -o ./bin/dicterm cmd/dicterm/main.go
+	GOARCH=amd64 GOOS=linux go build -ldflags "-s -w" -o ./bin/dicterm cmd/dicterm/main.go
 
 clean:
 	go clean

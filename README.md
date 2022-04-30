@@ -41,5 +41,5 @@ stems:
 
 ## Todo
 
-  - [ ] store key in a dotfile
+  - [x] store key in a dotfile
   - [ ] use a beatiful tui
