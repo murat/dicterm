@@ -44,7 +44,7 @@ func TestClient_Get(t *testing.T) {
 					return
 				}
 				w.WriteHeader(http.StatusOK)
-				w.Write(tt.want)
+				_, _ = w.Write(tt.want)
 			}))
 			defer srv.Close()
 
