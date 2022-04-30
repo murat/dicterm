@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 
@@ -21,7 +22,7 @@ func main() {
 	flag.StringVar(&word, "word", "", "word to look up")
 	flag.Parse()
 
-	c := api.NewClient(key)
+	c := api.NewClient(&http.Client{}, api.BaseURL, key)
 	r, err := c.Get(word)
 	if err != nil {
 		fmt.Printf("could not get response, err: %v", err)

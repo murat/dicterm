@@ -1,0 +1,129 @@
+[
+  {
+    "meta": {
+      "id": "hello",
+      "uuid": "0cdef8d5-c9d1-431b-b397-2077a127c328",
+      "sort": "080126800",
+      "src": "collegiate",
+      "section": "alpha",
+      "stems": [
+        "hello",
+        "hellos"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "hel*lo",
+      "prs": [
+        {
+          "mw": "hə-ˈlō",
+          "sound": {
+            "audio": "hello001",
+            "ref": "c",
+            "stat": "1"
+          }
+        },
+        {
+          "mw": "he-"
+        }
+      ]
+    },
+    "fl": "noun",
+    "ins": [
+      {
+        "il": "plural",
+        "if": "hel*los"
+      }
+    ],
+    "def": [
+      {
+        "sseq": [
+          [
+            [
+              "sense",
+              {
+                "dt": [
+                  [
+                    "text",
+                    "{bc}an expression or gesture of greeting "
+                  ],
+                  [
+                    "uns",
+                    [
+                      [
+                        [
+                          "text",
+                          "used interjectionally in greeting, in answering the telephone, or to express surprise "
+                        ],
+                        [
+                          "vis",
+                          [
+                            {
+                              "t": "{wi}hello{/wi} there"
+                            },
+                            {
+                              "t": "waved {wi}hello{/wi}"
+                            }
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              }
+            ]
+          ]
+        ]
+      }
+    ],
+    "et": [
+      [
+        "text",
+        "alteration of {it}hollo{/it}"
+      ]
+    ],
+    "date": "1834",
+    "shortdef": [
+      "an expression or gesture of greeting —used interjectionally in greeting, in answering the telephone, or to express surprise"
+    ]
+  },
+  {
+    "meta": {
+      "id": "hullo",
+      "uuid": "a8b26bf8-dba0-44d5-b1de-4a9a69e5ef10",
+      "sort": "080299200",
+      "src": "collegiate",
+      "section": "alpha",
+      "stems": [
+        "hello",
+        "hullo",
+        "hullos"
+      ],
+      "offensive": false
+    },
+    "hwi": {
+      "hw": "hul*lo",
+      "prs": [
+        {
+          "mw": "(ˌ)hə-ˈlō",
+          "sound": {
+            "audio": "hullo001",
+            "ref": "c",
+            "stat": "1"
+          }
+        }
+      ]
+    },
+    "cxs": [
+      {
+        "cxl": "chiefly British spelling of",
+        "cxtis": [
+          {
+            "cxt": "hello"
+          }
+        ]
+      }
+    ],
+    "shortdef": []
+  }
+]

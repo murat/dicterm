@@ -5,7 +5,15 @@
 
 dicterm is a cli interface for merriem webster dictionary.
 
+## Requirements
+
 Get your api key from [https://dictionaryapi.com/account/my-keys](https://dictionaryapi.com/account/my-keys)
+
+## Build
+
+```shell
+➜ make build
+```
 
 ## Usage
 
