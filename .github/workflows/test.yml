@@ -26,6 +26,12 @@ jobs:
         run: make test
       - name: Coverage
         run: make coverage
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          language: go
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: cover.out
       - name: Archive built files
         uses: actions/upload-artifact@v2
         with:
