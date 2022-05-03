@@ -1,5 +1,7 @@
 # dicterm
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1ce86ecf3fa845e5ab02743d258d5c70)](https://app.codacy.com/gh/murat/dicterm?utm_source=github.com&utm_medium=referral&utm_content=murat/dicterm&utm_campaign=Badge_Grade_Settings)
+
 ![Lint](https://github.com/murat/dicterm/actions/workflows/lint.yml/badge.svg)
 ![Tests](https://github.com/murat/dicterm/actions/workflows/test.yml/badge.svg)
 
