@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+// Handler is the handler for the API.
 type Handler struct {
 	Client  *http.Client
 	BaseURL string
@@ -13,6 +14,7 @@ type Handler struct {
 }
 
 const (
+	// BaseURL is the base URL for the API.
 	BaseURL = "https://www.dictionaryapi.com/api/v3/references/collegiate/json"
 )
 

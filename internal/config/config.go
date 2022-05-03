@@ -6,11 +6,13 @@ import (
 	"os"
 )
 
+// IConfig is interface for config file
 type IConfig interface {
 	Read() (*string, error)
 	Write(string) error
 }
 
+// Config is configuration file
 type Config struct {
 	File *os.File
 }
@@ -35,6 +37,7 @@ func New(path string) (*Config, error) {
 	return &Config{file}, nil
 }
 
+// Read reads key from config file
 func (cfg *Config) Read() (*string, error) {
 	buf := make([]byte, 1024)
 	n, err := cfg.File.Read(buf)
@@ -50,6 +53,7 @@ func (cfg *Config) Read() (*string, error) {
 	return &key, nil
 }
 
+// Write writes key to config file
 func (cfg *Config) Write(key string) error {
 	_, err := cfg.File.Write([]byte(key))
 	if err != nil {

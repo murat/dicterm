@@ -3,6 +3,7 @@
 ![Lint](https://github.com/murat/dicterm/actions/workflows/lint.yml/badge.svg)
 ![Tests](https://github.com/murat/dicterm/actions/workflows/test.yml/badge.svg)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/295007f859ca44b5b1a9418bb5685d40)](https://www.codacy.com/gh/murat/dicterm/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=murat/dicterm&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/295007f859ca44b5b1a9418bb5685d40)](https://www.codacy.com/gh/murat/dicterm/dashboard?utm_source=github.com&utm_medium=referral&utm_content=murat/dicterm&utm_campaign=Badge_Coverage)
 
 dicterm is a cli interface for merriem webster dictionary.
 
@@ -65,5 +66,5 @@ stems:
 
 ## Todo
 
-  - [x] store key in a dotfile
-  - [ ] use a beatiful tui
+- [X] store key in a dotfile
+- [ ] use a beatiful tui
