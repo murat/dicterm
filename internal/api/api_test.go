@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/murat/go-boilerplate/internal/api"
+	"github.com/murat/dicterm/internal/api"
 )
 
 func TestClient_Get(t *testing.T) {

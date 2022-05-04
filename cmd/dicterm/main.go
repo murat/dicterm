@@ -5,14 +5,15 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"github.com/murat/go-boilerplate/internal/config"
 	"net/http"
 	"os"
 	"strings"
 
-	"github.com/murat/go-boilerplate/internal/api"
-
 	"github.com/fatih/color"
+	"github.com/murat/dicterm/internal/api"
+	"github.com/murat/dicterm/internal/config"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 var (
@@ -68,24 +69,25 @@ func main() {
 		os.Exit(1)
 	}
 
-	var resp api.Response
+	var resp []api.Collegiate
 	if err := json.Unmarshal(r, &resp); err != nil {
 		fmt.Printf("could not unmarshal response, err: %v\n", err)
 		os.Exit(1)
 	}
 
-	highlight := color.New(color.Bold, color.FgHiGreen).SprintFunc()
-	bold := color.New(color.Bold, color.Faint).SprintFunc()
+	green := color.New(color.Bold, color.FgHiGreen).SprintFunc()
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"", "Definition", "Stems", "Etymology"})
+	table.SetRowLine(true)
 
 	for _, r := range resp {
-		defs := strings.Join(r.Shortdef, "\n- ")
+		defs := strings.Join(r.Shortdef, ", ")
 		stems := strings.Join(r.Meta.Stems, ", ")
-		fmt.Printf("%s\n\n%s:\n- %s\n\n%s:\n- %s\n\n",
-			highlight(word+"("+r.FL+")"),
-			bold("definitions"),
-			defs,
-			bold("stems"),
-			stems)
-		fmt.Printf("%s\n\n", bold(strings.Repeat("=", 20)))
+		etym := ""
+		for _, e := range r.Etymologies {
+			etym = strings.TrimSpace(etym + "\n" + strings.Join(e, ", "))
+		}
+		table.Append([]string{green(word + "(" + r.FunctionalLabel + ")"), defs, stems, etym})
 	}
+	table.Render()
 }
