@@ -47,7 +47,7 @@ func (cfg *Config) Read() (*string, error) {
 
 	key := string(buf[:n])
 	if key == "" {
-		return nil, ErrEmptyFile
+		return nil, ErrEmptyConfig
 	}
 
 	return &key, nil

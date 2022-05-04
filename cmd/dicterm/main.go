@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -9,10 +8,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/fatih/color"
-	"github.com/murat/dicterm/internal/api"
 	"github.com/murat/dicterm/internal/config"
 
+	"github.com/fatih/color"
+	"github.com/murat/mwgoapi"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -48,7 +47,7 @@ func main() {
 		k, err := cfg.Read()
 		if err != nil {
 			switch {
-			case errors.Is(err, config.ErrEmptyFile):
+			case errors.Is(err, mwgoapi.ErrEmptyConfig):
 				fmt.Println("please run `dicterm -h`")
 			default:
 				fmt.Printf("could not read key, %v\n", err)
@@ -62,19 +61,28 @@ func main() {
 		word = os.Args[1]
 	}
 
-	c := api.NewClient(&http.Client{}, api.BaseURL, key)
+	c := mwgoapi.NewClient(&http.Client{}, mwgoapi.BaseURL, key)
 	r, err := c.Get(word)
 	if err != nil {
 		fmt.Printf("could not get response, err: %v\n", err)
 		os.Exit(1)
 	}
 
-	var resp []api.Collegiate
-	if err := json.Unmarshal(r, &resp); err != nil {
+	var resp []mwgoapi.Collegiate
+	if err := c.UnmarshalResponse(r, &resp); err != nil {
 		fmt.Printf("could not unmarshal response, err: %v\n", err)
 		os.Exit(1)
 	}
 
+	if len(resp) == 0 {
+		fmt.Printf("could not found word: %s\n", word)
+		os.Exit(1)
+	}
+
+	Print(resp)
+}
+
+func Print(resp []mwgoapi.Collegiate) {
 	green := color.New(color.Bold, color.FgHiGreen).SprintFunc()
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"", "Definition", "Stems", "Etymology"})
