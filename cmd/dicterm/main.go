@@ -58,7 +58,7 @@ func main() {
 	}
 
 	if word == "" {
-		word = os.Args[1]
+		word = flag.Args()[0]
 	}
 
 	c := mwgoapi.NewClient(&http.Client{}, mwgoapi.BaseURL, key)
@@ -75,7 +75,7 @@ func main() {
 	}
 
 	if len(resp) == 0 {
-		fmt.Printf("could not found word: %s\n", word)
+		fmt.Printf("could not find word: %s\n", word)
 		os.Exit(1)
 	}
 
