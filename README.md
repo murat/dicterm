@@ -15,6 +15,10 @@ Get your api key from <https://dictionaryapi.com/account/my-keys>
 
 ```shell
 ➜ make build
+# OR
+➜ make            # installs to $GOPATH/bin
+# OR
+➜ make arch=arm64 # temporarily sets the GOARCH variable before installing
 ```
 
 ## Usage
