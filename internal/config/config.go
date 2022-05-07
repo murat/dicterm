@@ -9,30 +9,29 @@ import (
 // FileName is the default configuration file name
 const FileName = ".dicterm"
 
-var _ io.ReadWriteCloser = &Config{}
-
 // Config is configuration file
 type Config struct {
 	File *os.File
 }
 
-// var _ io.ReadWriter = &Config{}
+var _ io.ReadWriteCloser = &Config{}
 
 // New returns configuration file
 func New(path string) (*Config, error) {
-	home, err := os.UserHomeDir()
-	if err != nil {
-		return nil, fmt.Errorf("could not get user home, %w", err)
-	}
 	if path == "" {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return nil, fmt.Errorf("could not get user home, %w", err)
+		}
 		path = fmt.Sprintf("%s/%s", home, FileName)
 	}
+
 	file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return nil, fmt.Errorf("could not open config file, %w", err)
 	}
 
-	return &Config{File: file}, nil
+	return &Config{file}, nil
 }
 
 // Read reads key from config file
@@ -49,7 +48,7 @@ func (cfg *Config) Write(p []byte) (int, error) {
 		return 0, fmt.Errorf("could not seek file, %w", err)
 	}
 
-	n, err := cfg.File.WriteString(string(p))
+	n, err := cfg.File.Write(p)
 	if err != nil {
 		return 0, fmt.Errorf("could not write file, %w", err)
 	}
@@ -57,6 +56,7 @@ func (cfg *Config) Write(p []byte) (int, error) {
 	return n, nil
 }
 
+// Close closes the config file
 func (cfg *Config) Close() error {
 	return cfg.File.Close()
 }
