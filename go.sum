@@ -7,8 +7,8 @@ github.com/mattn/go-isatty v0.0.14 h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9
 github.com/mattn/go-isatty v0.0.14/go.mod h1:7GGIvUiUoEMVVmxf/4nioHXj79iQHKdU27kJ6hsGG94=
 github.com/mattn/go-runewidth v0.0.9 h1:Lm995f3rfxdpd6TSmuVCHVb/QhupuXlYr8sCI/QdE+0=
 github.com/mattn/go-runewidth v0.0.9/go.mod h1:H031xJmbD/WCDINGzjvQ9THkh0rPKHF+m2gUSrubnMI=
-github.com/murat/mwgoapi v0.0.0-20220507115949-dab436de28bb h1:F49zfxK5mEmnd7fFVAXdr9i741ZzCWoiIZS3wwby6eA=
-github.com/murat/mwgoapi v0.0.0-20220507115949-dab436de28bb/go.mod h1:kBJtjKUbpzBktHHuk6/YJ5uMf4sWl6BcX4CZhANM+cs=
+github.com/murat/mwgoapi v0.0.0-20220507143158-ac7d23f7e0ae h1:PUVg3HqYJStJGMP58fVgGwZM8E2Ij/xh4ZD07sHICRU=
+github.com/murat/mwgoapi v0.0.0-20220507143158-ac7d23f7e0ae/go.mod h1:kBJtjKUbpzBktHHuk6/YJ5uMf4sWl6BcX4CZhANM+cs=
 github.com/olekukonko/tablewriter v0.0.5 h1:P2Ga83D34wi1o9J6Wh1mRuqd4mF/x/lgBS7N7AbDhec=
 github.com/olekukonko/tablewriter v0.0.5/go.mod h1:hPp6KlRPjbx+hW8ykQs1w3UBbZlj6HuIJcUGPhkA7kY=
 golang.org/x/sys v0.0.0-20200116001909-b77594299b42/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
