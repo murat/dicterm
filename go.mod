@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/fatih/color v1.13.0
-	github.com/murat/mwgoapi v0.0.0-20220507115949-dab436de28bb
+	github.com/murat/mwgoapi v0.0.0-20220507143158-ac7d23f7e0ae
 	github.com/olekukonko/tablewriter v0.0.5
 )
 

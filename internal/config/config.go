@@ -6,19 +6,17 @@ import (
 	"os"
 )
 
-// IConfig is interface for config file
-type IConfig interface {
-	Read() (*string, error)
-	Write(string) error
-}
+// FileName is the default configuration file name
+const FileName = ".dicterm"
+
+var _ io.ReadWriteCloser = &Config{}
 
 // Config is configuration file
 type Config struct {
 	File *os.File
 }
 
-// FileName is the default configuration file name
-const FileName = ".dicterm"
+// var _ io.ReadWriter = &Config{}
 
 // New returns configuration file
 func New(path string) (*Config, error) {
@@ -29,36 +27,36 @@ func New(path string) (*Config, error) {
 	if path == "" {
 		path = fmt.Sprintf("%s/%s", home, FileName)
 	}
-	file, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_RDWR, os.ModePerm)
+	file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return nil, fmt.Errorf("could not open config file, %w", err)
 	}
 
-	return &Config{file}, nil
+	return &Config{File: file}, nil
 }
 
 // Read reads key from config file
-func (cfg *Config) Read() (*string, error) {
-	buf := make([]byte, 1024)
-	n, err := cfg.File.Read(buf)
-	if err != nil && err != io.EOF {
-		return nil, fmt.Errorf("could not read file, %w", err)
-	}
-
-	key := string(buf[:n])
-	if key == "" {
-		return nil, ErrEmptyConfig
-	}
-
-	return &key, nil
+func (cfg *Config) Read(p []byte) (int, error) {
+	return cfg.File.Read(p)
 }
 
 // Write writes key to config file
-func (cfg *Config) Write(key string) error {
-	_, err := cfg.File.Write([]byte(key))
-	if err != nil {
-		return fmt.Errorf("could not write to the config file, %w", err)
+func (cfg *Config) Write(p []byte) (int, error) {
+	if err := cfg.File.Truncate(0); err != nil {
+		return 0, fmt.Errorf("could not truncate file, %w", err)
+	}
+	if _, err := cfg.File.Seek(0, 0); err != nil {
+		return 0, fmt.Errorf("could not seek file, %w", err)
 	}
 
-	return nil
+	n, err := cfg.File.WriteString(string(p))
+	if err != nil {
+		return 0, fmt.Errorf("could not write file, %w", err)
+	}
+
+	return n, nil
+}
+
+func (cfg *Config) Close() error {
+	return cfg.File.Close()
 }

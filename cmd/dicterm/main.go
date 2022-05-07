@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -36,26 +36,38 @@ func main() {
 		fmt.Printf("could not access the config file, %v\n", err)
 		os.Exit(1)
 	}
-	defer cfg.File.Close()
+	defer cfg.Close()
 
 	if key != "" {
-		err := cfg.Write(key)
+		n, err := cfg.Write([]byte(key))
 		if err != nil {
 			fmt.Printf("could not write key to config file, %v\n", err)
 			os.Exit(1)
 		}
-	} else {
-		k, err := cfg.Read()
-		if err != nil {
-			switch {
-			case errors.Is(err, config.ErrEmptyConfig):
-				fmt.Println("please run `dicterm -h`")
-			default:
-				fmt.Printf("could not read key, %v\n", err)
-			}
+		if n != len(key) {
+			fmt.Printf("could not write all bytes to config file, %v\n", err)
 			os.Exit(1)
 		}
-		key = *k
+	} else {
+		buf := make([]byte, 36) // api key is UUID(32 bytes)
+		for {
+			n, err := cfg.Read(buf)
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				fmt.Printf("could not read key from config file, %v\n", err)
+				break
+			}
+			if n > 0 {
+				key = string(buf[:n])
+			}
+		}
+	}
+
+	if key == "" {
+		fmt.Println("please run `dicterm -h`")
+		os.Exit(1)
 	}
 
 	if word == "" {
