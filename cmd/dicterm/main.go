@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -47,7 +48,7 @@ func main() {
 		k, err := cfg.Read()
 		if err != nil {
 			switch {
-			case errors.Is(err, mwgoapi.ErrEmptyConfig):
+			case errors.Is(err, config.ErrEmptyConfig):
 				fmt.Println("please run `dicterm -h`")
 			default:
 				fmt.Printf("could not read key, %v\n", err)
@@ -69,7 +70,7 @@ func main() {
 	}
 
 	var resp []mwgoapi.Collegiate
-	if err := c.UnmarshalResponse(r, &resp); err != nil {
+	if err := json.Unmarshal(r, &resp); err != nil {
 		fmt.Printf("could not unmarshal response, err: %v\n", err)
 		os.Exit(1)
 	}
@@ -84,18 +85,29 @@ func main() {
 
 func Print(resp []mwgoapi.Collegiate) {
 	green := color.New(color.Bold, color.FgHiGreen).SprintFunc()
-	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"", "Definition", "Stems", "Etymology"})
-	table.SetRowLine(true)
+	header := []string{"", "Definition", "Stems", "Etymology"}
+	data := [][]string{}
 
 	for _, r := range resp {
-		defs := strings.Join(r.Shortdef, ", ")
+		defs := strings.Join(r.Shortdef, ",")
+		fl := ""
+		if r.FunctionalLabel != "" {
+			fl = "(" + r.FunctionalLabel + ")"
+		}
 		stems := strings.Join(r.Meta.Stems, ", ")
+
 		etym := ""
 		for _, e := range r.Etymologies {
 			etym = strings.TrimSpace(etym + "\n" + strings.Join(e, ", "))
 		}
-		table.Append([]string{green(word + "(" + r.FunctionalLabel + ")"), defs, stems, etym})
+
+		data = append(data, []string{green(word + fl), defs, stems, etym})
 	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader(header)
+	table.SetRowLine(true)
+	table.SetAutoMergeCells(true)
+	table.AppendBulk(data)
 	table.Render()
 }
