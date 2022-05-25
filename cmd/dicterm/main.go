@@ -21,35 +21,42 @@ var (
 )
 
 func main() {
-	if len(os.Args) < 2 {
+	if err := run(os.Args); err != nil {
+		fmt.Printf("an error occurred, %v\n", err)
 		fmt.Println("please run `dicterm -h`")
 		os.Exit(1)
 	}
+}
 
-	flag.StringVar(&key, "key", "", "dict api key (will be stored in ~/.dicterm)")
-	flag.StringVar(&configPath, "config", "", "path of config file, default ~/.dicterm")
-	flag.StringVar(&word, "word", "", "word to look up")
-	flag.Parse()
+func run(args []string) error {
+	if len(args) < 2 {
+		return fmt.Errorf("missing arguments")
+	}
+
+	flags := flag.NewFlagSet(args[0], flag.ExitOnError)
+	flags.StringVar(&key, "key", "", "dict api key (will be stored in ~/.dicterm)")
+	flags.StringVar(&configPath, "config", "", "path of config file, default ~/.dicterm")
+	flags.StringVar(&word, "word", "", "word to look up")
+	if err := flags.Parse(args[1:]); err != nil {
+		return fmt.Errorf("flag parse error, %w", err)
+	}
 
 	cfg, err := config.New(configPath)
 	if err != nil {
-		fmt.Printf("could not access the config file, %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("could not open config file, %w", err)
 	}
 	defer cfg.Close()
 
 	if key != "" {
 		n, err := cfg.Write([]byte(key))
 		if err != nil {
-			fmt.Printf("could not write key to config file, %v\n", err)
-			os.Exit(1)
+			return fmt.Errorf("could not write key to config file, %w", err)
 		}
 		if n != len(key) {
-			fmt.Printf("could not write all bytes to config file, %v\n", err)
-			os.Exit(1)
+			return fmt.Errorf("could not write all bytes to config file, %w", err)
 		}
 	} else {
-		buf := make([]byte, 36) // api key is UUID(32 bytes)
+		buf := make([]byte, 36) // api key is UUID(36 bytes)
 		for {
 			n, err := cfg.Read(buf)
 			if err == io.EOF {
@@ -66,36 +73,34 @@ func main() {
 	}
 
 	if key == "" {
-		fmt.Println("please run `dicterm -h`")
-		os.Exit(1)
+		return fmt.Errorf("please run `dicterm -h`")
 	}
 
 	if word == "" {
-		word = flag.Args()[0]
+		word = flags.Args()[0]
 	}
 
 	c := mwgoapi.NewClient(&http.Client{}, mwgoapi.BaseURL, key)
 	r, err := c.Get(word)
 	if err != nil {
-		fmt.Printf("could not get response, err: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("api request failed, %w", err)
 	}
 
 	var resp []mwgoapi.Collegiate
 	if err := json.Unmarshal(r, &resp); err != nil {
-		fmt.Printf("could not unmarshal response, err: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("marshal response body failed, %w", err)
 	}
 
 	if len(resp) == 0 {
-		fmt.Printf("could not find word: %s\n", word)
-		os.Exit(1)
+		fmt.Printf("word not found: %s\n", word)
 	}
 
-	Print(resp)
+	table(resp)
+
+	return nil
 }
 
-func Print(resp []mwgoapi.Collegiate) {
+func table(resp []mwgoapi.Collegiate) {
 	green := color.New(color.Bold, color.FgHiGreen).SprintFunc()
 	header := []string{"", "Definition", "Stems", "Etymology"}
 	data := [][]string{}

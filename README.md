@@ -41,8 +41,3 @@ Usage of ./bin/dicterm:
 ## Screenshot
 
 ![screenshot](./example/screenshot.jpeg)
-
-## Todo
-
--   [x] store key in a dotfile
--   [x] use a beatiful tui
